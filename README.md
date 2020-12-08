@@ -1,5 +1,5 @@
 # crucifix, discord multi-tool
-
+# ![](https://img.shields.io/badge/version-1.0-lightgrey.svg)
 # features:
 ---------------------------------------------------
 
