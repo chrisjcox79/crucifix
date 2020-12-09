@@ -19,7 +19,7 @@ import requests
 import discord, os, json
 from discord.ext import commands
 from discord.ext.commands import Bot
-from colorama import Fore
+from colorama import Fore, Style, init
 from threading import Thread as thr
 from os import system, name
 COMMANDS = ["1","2","3","4","clear","cls","logout","exit","quit"]
@@ -34,6 +34,8 @@ def crucifix_clear():
 def crucifix_main():
     global newprompt
     newprompt = True
+    ctypes.windll.kernel32.SetConsoleTitleW(
+    f"crucifix | discord tools | created by social")
     print("")
     print("")
     crucifix_clear()
@@ -86,6 +88,76 @@ def crucifix_checker():
             except Exception:
                 print (f"TOKEN-CHECKER [{Fore.BLUE}FAILED{Fore.RESET}] | CHECK INTERNET CONNECTIVITY, OR TRY AGAIN LATER")
 
+class Reporter:
+    def __init__(self):
+        self.session = requests.Session()
+        self.session.trust_env = False
+        self.reported = 0
+        self.errors = 0
+
+    def title(self):
+        ctypes.windll.kernel32.SetConsoleTitleW('crucifix | discord tools | created by social | sent > {0} | errors > {1}'.format(self.reported, self.errors))
+
+    def crucifix_report(self):
+        headers = {
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept-Language': 'en-US',
+            'User-Agent': 'Discord/21887 CFNetwork/1197 Darwin/20.0.0',
+            'Content-Type': 'application/json',
+            'Authorization': self.token
+        }
+        json = {
+            'channel_id': self.channel_id, 
+            'message_id': self.message_id, 
+            'guild_id': self.guild_id, 
+            'reason': self.reason
+        }
+        crucifix_report = self.session.post('https://discordapp.com/api/v8/report', json = json, headers = headers)
+        if crucifix_report.status_code == 201:
+            self.reported += 1
+            self.title()
+        else:
+            self.errors += 1
+            self.title()
+
+    def reasons(self):
+        print('\n{0} [>] {1}[1] > [ILLEGAL CONTENT]'.format(Fore.BLUE, Fore.WHITE))
+        print('{0} [>] {1}[2] > [HARASSMENT]'.format(Fore.BLUE, Fore.WHITE))
+        print('{0} [>] {1}[3] > [SPAM/PHISHING]'.format(Fore.BLUE, Fore.WHITE))
+        print('{0} [>] {1}[4] > [SELF-HARM]'.format(Fore.BLUE, Fore.WHITE))
+        print('{0} [>] {1}[5] > [NSFW]'.format(Fore.BLUE, Fore.WHITE))
+        option = str(input('\n{0} > {1}'.format(Fore.BLUE, Fore.WHITE)))
+        if option == '1' or option == 'Illegal Content':
+            self.reason = 0
+        elif option == '2' or option == 'Harassment':
+            self.reason = 1
+        elif option == '3' or option == 'Spam or Phishing Links':
+            self.reason = 2
+        elif option == '4' or option == 'Self Harm':
+            self.reason = 3
+        elif option == '5' or option == 'NSFW Content':
+            self.reason = 4
+        else:
+            self.reasons()
+    
+    def start(self):
+        self.reasons()
+        def my_function():
+            self.crucifix_report()
+        while True:
+            if threading.active_count() <= self.threads:
+                threading.Thread(target = my_function).start()
+
+    def main(self):
+        self.token = str(input('\n{0} [>] {1}[TOKEN] > '.format(Fore.BLUE, Fore.WHITE)))
+        self.guild_id = str(input('{0} [>] {1}[GUILD ID] >'.format(Fore.BLUE, Fore.WHITE)))
+        self.channel_id = str(input('{0} [>] {1}[CHANNEL ID] > '.format(Fore.BLUE, Fore.WHITE)))
+        self.message_id = int(input('{0} [>] {1}[MESSAGE ID] > '.format(Fore.BLUE, Fore.WHITE)))
+        self.threads = int(input('{0} [>] {1}[THREADS] > '.format(Fore.BLUE, Fore.WHITE)))
+        self.start()
+    init(convert = True, autoreset = True)
+
 def crucifix_idbruteforce():
  TOKEN = input(f"[{Fore.BLUE}T{Fore.RESET}] YOUR TOKEN > ")
  class MyClient(discord.Client):
@@ -116,114 +188,19 @@ def crucifix_idbruteforce():
     r = req.get(url, headers=headers)
     if r.status_code == 200:
 
-        print(f'[{Fore.BLUE}T{Fore.RESET}] {token} > {Fore.GREEN}VALID{Fore.RESET}')
+        print(f'[{Fore.BLUE}T{Fore.RESET}] {token} > {Fore.BLUE}VALID{Fore.RESET}')
         f = open("token.txt", "a")
         f.write(token)
         f.close() 
         exit(0)
     else:
         print(f'[{Fore.BLUE}T{Fore.RESET}] {token} > {Fore.RED}INVALID{Fore.RESET}')
- token = os.environ.get(TOKEN)
+    token = os.environ.get(TOKEN)
  client = MyClient()
  client.run(TOKEN, bot=False,)
 
 def crucifix_idpayload():
-    class Main:
-        def __init__(self):
-            self.GUILD_ID = input(f'[{Fore.BLUE}>{Fore.RESET}] G-ID: ')
-            self.CHANNEL_ID = input(f'[{Fore.BLUE}>{Fore.RESET}] C-ID: ')
-            self.MESSAGE_ID = input(f'[{Fore.BLUE}>{Fore.RESET}] M-ID: ')
-            REASON = input(
-            f'\n[{Fore.BLUE}1{Fore.RESET}] ILLEGAL CONTENT\n'
-            f'[{Fore.BLUE}2{Fore.RESET}] HARASSMENT\n'
-            f'[{Fore.BLUE}3{Fore.RESET}] SPAM/PHISHING\n'
-            f'[{Fore.BLUE}4{Fore.RESET}] SELF-HARM\n'
-            f'[{Fore.BLUE}5{Fore.RESET}] NSFW\n\n'
-            f'[{Fore.BLUE}>{Fore.RESET}] REASON: '
-         )
-
-            if REASON.upper() in ('1', 'ILLEGAL CONTENT'):
-                self.REASON = 0
-            elif REASON.upper() in ('2', 'HARASSMENT'):
-                self.REASON = 1
-            elif REASON.upper() in ('3', 'SPAM OR PHISHING LINKS'):
-                self.REASON = 2
-            elif REASON.upper() in ('4', 'SELF-HARM'):
-                self.REASON = 3
-            elif REASON.upper() in ('5', 'NSFW CONTENT'):
-                self.REASON = 4
-            else:
-                print(f'\n[{Fore.BLUE}!{Fore.RESET}] REASON WAS INVALID')
-                input('')
-
-                self.RESPONSES = {
-                '401: Unauthorized': f'[{Fore.BLUE}!{Fore.RESET}] INVALID TOKEN',
-                'Missing Access': f'[{Fore.BLUE}!{Fore.RESET}] MISSING ACCESS',
-                'You need to verify your account in order to perform this action.': '[!] UNVERIFIED'
-                }
-                self.sent = 0
-                self.errors = 0
-
-        def _reporter(self):
-            report = requests.post(
-            'https://discordapp.com/api/v8/report', json={
-                'channel_id': self.CHANNEL_ID,
-                'message_id': self.MESSAGE_ID,
-                'guild_id': self.GUILD_ID,
-                'reason': self.REASON
-            }, headers={
-                'Accept': '*/*',
-                'Accept-Encoding': 'gzip, deflate',
-                'Accept-Language': 'sv-SE',
-                'User-Agent': 'Discord/21295 CFNetwork/1128.0.1 Darwin/19.6.0',
-                'Content-Type': 'application/json',
-                'Authorization': self.TOKEN
-            }
-         )
-            if (status := report.status_code) == 201:
-                self.sent += 1
-                print(f'[{Fore.BLUE}!{Fore.RESET}] REPORTED.')
-            elif status in (401, 403):
-                self.errors += 1
-                print(self.RESPONSES[report.json()['message']])
-            else:
-                self.errors += 1
-                print(f'[{Fore.BLUE}!{Fore.RESET}] ERROR: {report.text} | S.C: {status}')
-
-        def _update_title(self):
-            while True:
-                ctypes.windll.kernel32.SetConsoleTitleW(f"crucifix | discord tools | sent > {self.sent} | errors > {self.errors}")
-            time.sleep(0.1)
-
-        def _multi_threading(self):
-            threading.Thread(target=self._update_title).start()
-            while True:
-                if threading.active_count() <= 300:
-                    threading.Thread(target=self._reporter).start()
-
-        def setup(self):
-            recognized = None
-            if os.path.exists(config_json := 'config.json'):
-                with open(config_json, 'r') as f:
-                    try:
-                        data = json.load(f)
-                        self.TOKEN = data['dtoken']
-                    except (KeyError, json.decoder.JSONDecodeError):
-                        recognized = False
-                    else:
-                        recognized = True
-            else:
-                recognized = False
-
-            if not recognized:
-                self.TOKEN = input('[>] DISCORD TOKEN: ')
-                with open(config_json, 'w') as f:
-                    json.dump({'dtoken': self.TOKEN}, f)
-            print()
-            self._multi_threading()
-    if __name__ == '__main__':
-        main = Main()
-        main.setup()
+ Reporter().main()
 
 def cmds():
     global newprompt
@@ -258,8 +235,6 @@ def cmds():
         sys.exit("   ╠═[X] EXITING > GOODBYE.")
 
 crucifix_main()
-ctypes.windll.kernel32.SetConsoleTitleW(
-    f"crucifix | discord tools | created by social")
 while True:
     try:
         cmds()
