@@ -15,8 +15,10 @@ import random
 import base64
 import os
 import threading
+import pypresence
 import requests
 import discord, os, json
+from pypresence import Presence
 from discord.ext import commands
 from discord.ext.commands import Bot
 from colorama import Fore, Style, init
@@ -24,6 +26,11 @@ from threading import Thread as thr
 from os import system, name
 COMMANDS = ["1","2","3","4","clear","cls","logout","exit","quit"]
 current_path = os.path.dirname(os.path.realpath(__file__))
+
+client_id = '787480345222184961'
+RPC = Presence(client_id)
+RPC.connect()
+RPC.update(details="idling.", state="s4cial - github", large_image="crucifix", start=int(round(time.time() * 1000)),)
 
 def crucifix_clear():
     if name == 'nt':
