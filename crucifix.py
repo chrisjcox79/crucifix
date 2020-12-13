@@ -27,16 +27,19 @@ from os import system, name
 COMMANDS = ["1","2","3","4","clear","cls","logout","exit","quit"]
 current_path = os.path.dirname(os.path.realpath(__file__))
 
-client_id = '787480345222184961'
-RPC = Presence(client_id)
-RPC.connect()
-RPC.update(details="idling.", state="s4cial - github", large_image="crucifix", start=int(round(time.time() * 1000)),)
-
 def crucifix_clear():
     if name == 'nt':
         _ = system('cls')
     else:
         _ = system('clear')
+
+try:
+	client_id = '787480345222184961'
+	RPC = Presence(client_id)
+	RPC.connect()
+	RPC.update(details="idling.", state="s4cial - github", large_image="crucifix", start=int(round(time.time() * 1000)),)
+except Exception as e:
+	crucifix_clear()
 
 def crucifix_main():
     global newprompt
@@ -201,7 +204,7 @@ def crucifix_idbruteforce():
         f.close() 
         exit(0)
     else:
-        print(f'[{Fore.BLUE}T{Fore.RESET}] {token} > {Fore.RED}INVALID{Fore.RESET}')
+        print(f'[{Fore.BLUE}T{Fore.RESET}] {token} > INVALID{Fore.RESET}')
     token = os.environ.get(TOKEN)
  client = MyClient()
  client.run(TOKEN, bot=False,)
