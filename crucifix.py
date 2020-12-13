@@ -14,6 +14,8 @@ import datetime
 import random
 import base64
 import os
+import datetime
+from datetime import date
 import threading
 import pypresence
 import requests
@@ -26,6 +28,8 @@ from threading import Thread as thr
 from os import system, name
 COMMANDS = ["1","2","3","4","clear","cls","logout","exit","quit"]
 current_path = os.path.dirname(os.path.realpath(__file__))
+date = date.today()
+now = datetime.datetime.now()
 
 def crucifix_clear():
     if name == 'nt':
@@ -65,19 +69,27 @@ def crucifix_generator():
     count = 0
     print(f"[{Fore.BLUE}1{Fore.RESET}] > TOKEN GENERATOR | CHOSEN ")
     cantidad = input(f"[{Fore.BLUE}AMOUNT{Fore.RESET}] > ")
-    while int(count)<int(cantidad):
-            Generated = "NT"+random.choice(string.ascii_letters)+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(21))+"."+random.choice(string.ascii_letters).upper()+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))+"."+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(27))
-            f= open(current_path +"/"+str("tokens")+str("")+".txt","a")
-            f.write(Generated+"\n")
-            print(f"[{Fore.BLUE}TOKEN{Fore.RESET}] > "+ Generated)
-            count+=1
-            if int(count)==int(cantidad):
+    while(int(count)<int(cantidad)):
+        firstGen = random.choice(string.ascii_letters).upper()+random.choice(string.ascii_letters).upper()+random.choice(string.ascii_letters)+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(21))+"."+ random.choice(string.ascii_letters).upper()+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))+"."+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(27))
+        secondGen = "MT"+random.choice(string.ascii_letters)+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(21))+"."+random.choice(string.ascii_letters).upper()+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))+"."+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(27))
+        thirdGen = "NT"+random.choice(string.ascii_letters)+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(21))+"."+random.choice(string.ascii_letters).upper()+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))+"."+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(27))
+        fourthGen = "MD"+random.choice(string.ascii_letters)+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(21))+"."+random.choice(string.ascii_letters).upper()+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))+"."+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(27))
+        fifthGen = "mfa."+random.choice(string.ascii_letters)+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(21))+"."+random.choice(string.ascii_letters).upper()+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))+"."+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(27))
+        f= open(current_path +"/"+str("tokens")+str("")+".txt","a")
+        f.write(firstGen+"\n"+secondGen+"\n"+thirdGen+"\n"+fourthGen+"\n"+fifthGen+"\n")
+        print(f"[{Fore.BLUE}TOKEN{Fore.RESET}] > " + firstGen)
+        print(f"[{Fore.BLUE}TOKEN{Fore.RESET}] > " + secondGen)
+        print(f"[{Fore.BLUE}TOKEN{Fore.RESET}] > " + thirdGen)
+        print(f"[{Fore.BLUE}TOKEN{Fore.RESET}] > " + fourthGen)
+        print(f"[{Fore.BLUE}TOKEN{Fore.RESET}] > " + fifthGen)
+        count+=1
+        if int(count)==int(cantidad):
                 print(f"\n[{Fore.BLUE}TOKENS GENERATED{Fore.RESET}] | CRUCIFIX | S4CIAL")
                 print(f"[{Fore.BLUE}TOKENS{Fore.RESET}] SAVED TO > 'TOKENS.TXT'")
                 input("ANY KEY TO RETURN >")
                 crucifix_main()
-            pass
-            pass
+                pass
+                pass
 
 def crucifix_checker():
     crucifix_main()
@@ -92,9 +104,9 @@ def crucifix_checker():
             src = requests.get('https://discordapp.com/api/v6/auth/login', headers=headers)
             try:
                 if src.status_code == 200:
-	                print(f"[{Fore.BLUE}VALID TOKEN{Fore.RESET}] >" + token)
+	                print(f"[{Fore.BLUE}VALID TOKEN{Fore.RESET}] > " + token)
                 else:
-	                print(f"[{Fore.BLUE}INVALID TOKEN{Fore.RESET}] >" + token)
+	                print(f"[{Fore.BLUE}INVALID TOKEN{Fore.RESET}] > " + token)
             except Exception:
                 print (f"TOKEN-CHECKER [{Fore.BLUE}FAILED{Fore.RESET}] | CHECK INTERNET CONNECTIVITY, OR TRY AGAIN LATER")
 
