@@ -23,8 +23,6 @@ don't exe & pass off as your own, crucifix is a one-of-a-kind multi-tool, those 
 
 >> py to exe, or install dependencies
 
->> add your discord token to config.json, (or don't, it'll prompt you if you choose not to)
-
 >> run crucifix, & enjoy.
 
 ---------------------------------------------------
